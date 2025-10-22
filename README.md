@@ -1,12 +1,12 @@
-<h1>ExpNo 6 : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
-<h3>Name:      </h3>
-<h3>Register Number:       </h3>
-<H3>Aim:</H3>
+<h1>Exp-No-6 : Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
+<h3>Name: Sanjana Sri N     </h3>
+<h3>Register Number: 2305003007      </h3>
+<H2>Aim:</H2>
 <p>
     Implement Minimax Search Algorithm for a Simple TIC-TAC-TOE game
 </p>
 
-<H3>Theory and Procedure:</H3>
+<H2>Theory and Procedure:</H2>
 To begin, let's start by defining what it means to play a perfect game of tic tac toe:
 
 If I play perfectly, every time I play I will either win the game, or I will draw the game. Furthermore if I play against another perfect player, I will always draw the game.
@@ -62,7 +62,7 @@ Let's walk through the algorithm's execution with the full move tree, and show w
 
 Here is the function for scoring the game:
 
-# @player is the turn taking player
+### @player is the turn taking player
 def score(game)
     if game.win?(@player)
         return 10
@@ -75,7 +75,7 @@ end
 Simple enough, return +10 if the current player wins the game, -10 if the other player wins and 0 for a draw. You will note that who the player is doesn't matter. X or O is irrelevant, only who's turn it happens to be.
 
 And now the actual minimax algorithm; note that in this implementation a choice or move is simply a row / column address on the board, for example [0,2] is the top right square on a 3x3 board.
-
+```
 def minimax(game)
     return score(game) if game.over?
     scores = [] # an array of scores
@@ -101,7 +101,9 @@ def minimax(game)
         return scores[min_score_index]
     end
 end
-## program
+```
+
+## Sample Program:
 ```python
 import math
 
@@ -140,7 +142,7 @@ def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth, alpha, beta):
 ```
 
 <hr>
-<h2>Sample Input and Output</h2>
+<h2>Sample Input and Output:</h2>
 
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/6b668685-8bcc-43c5-b5c2-ddd43f3da84a)
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/8ca1b08a-8312-4ef5-89df-e69b7b2c3fa2)
@@ -149,5 +151,82 @@ def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth, alpha, beta):
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/a2acb6a1-ed8e-42e5-8968-fe805e4b0255)
 
 <hr>
+
+## Program:
+
+```python
+import math,time
+
+def win(b,p):
+    for i in range(3):
+        if all(b[i][j]==p for j in range(3)) or all(b[j][i]==p for j in range(3)): return True
+    return b[0][0]==b[1][1]==b[2][2]==p or b[0][2]==b[1][1]==b[2][0]==p
+
+def full(b): return all(c!="." for r in b for c in r)
+
+def show(b):
+    for r in b: print("|".join(r))
+    print()
+
+def minimax(b,maxi):
+    if win(b,"X"): return 1
+    if win(b,"O"): return -1
+    if full(b): return 0
+    if maxi:
+        best=-math.inf
+        for i in range(3):
+            for j in range(3):
+                if b[i][j]==".":
+                    b[i][j]="X"
+                    best=max(best,minimax(b,False))
+                    b[i][j]="."
+        return best
+    else:
+        best=math.inf
+        for i in range(3):
+            for j in range(3):
+                if b[i][j]==".":
+                    b[i][j]="O"
+                    best=min(best,minimax(b,True))
+                    b[i][j]="."
+        return best
+
+def best_move(b):
+    mv=(-1,-1); val=-math.inf
+    for i in range(3):
+        for j in range(3):
+            if b[i][j]==".":
+                b[i][j]="X"
+                v=minimax(b,False)
+                b[i][j]="."
+                if v>val: mv,val=(i,j),v
+    return mv
+
+b=[["."]*3 for _ in range(3)]
+while True:
+    show(b)
+    if win(b,"X"): print("X wins!"); break
+    if win(b,"O"): print("O wins!"); break
+    if full(b): print("It's a draw!"); break
+
+    t=time.time()
+    x,y=best_move(b)
+    print(f"Evaluation time: {round(time.time()-t,4)}s")
+    print(f"Recommended move: X = {x}, Y = {y}")
+    b[x][y]="X"
+    show(b)
+
+    if win(b,"X"): print("X wins!"); break
+    if full(b): print("It's a draw!"); break
+
+    x=int(input("Insert the X coordinate: "))
+    y=int(input("Insert the Y coordinate: "))
+    if b[x][y]==".": b[x][y]="O"
+
+```
+
+## Output:
+<img width="489" height="625" alt="image" src="https://github.com/user-attachments/assets/4c9ca332-b11b-4364-bad7-702f2cadf1aa" />
+
 <h2>Result:</h2>
 <p>Thus,Implementation of  Minimax Search Algorithm for a Simple TIC-TAC-TOE game wasa done successfully.</p>
